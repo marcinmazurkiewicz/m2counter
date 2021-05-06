@@ -4,6 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class GameRepository {
@@ -15,6 +16,11 @@ public class GameRepository {
 
     public List<Game> getAllGames() {
         return em.createNamedQuery("Games.findAll", Game.class).getResultList();
+    }
+
+    public Optional<Game> getGameById(Long gameId) {
+        Game game = em.find(Game.class, gameId);
+        return Optional.ofNullable(game);
     }
 
     @Transactional
