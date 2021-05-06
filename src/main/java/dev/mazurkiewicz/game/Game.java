@@ -1,11 +1,10 @@
 package dev.mazurkiewicz.game;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity(name = "games")
+@NamedQuery(name = "Games.findAll",
+        query = "SELECT g FROM games g ORDER BY g.id")
 public class Game {
 
     private Long id;
