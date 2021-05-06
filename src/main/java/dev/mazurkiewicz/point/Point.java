@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity(name = "points")
+@NamedQuery(name = "Points.findAll",
+        query = "SELECT p FROM points p ORDER BY p.id")
 public class Point {
     private Long id;
     private Integer points;
