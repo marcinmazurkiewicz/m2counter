@@ -4,7 +4,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Optional;
-import java.util.Set;
 
 @ApplicationScoped
 public class UserRepository {
@@ -14,37 +13,14 @@ public class UserRepository {
         this.entityManager = entityManager;
     }
 
+    @Transactional
+    public void saveUser(User user) {
+        entityManager.persist(user);
+    }
+
     public Optional<User> findUser(String username) {
         return entityManager.createNamedQuery("Users.findByEmail", User.class)
                 .setParameter("email", username)
                 .getResultList().stream().findFirst();
-    }
-
-    @Transactional
-    public void saveUser(User user) {
-        Role role = findRole("USER");
-        user.setRoles(Set.of(role));
-        entityManager.persist(user);
-    }
-
-    @Transactional
-    private void saveRole(Role role) {
-        entityManager.persist(role);
-    }
-
-    private Role findRole(String roleName) {
-        return entityManager
-                .createNamedQuery("Roles.findByName", Role.class)
-                .setParameter("roleName", roleName)
-                .getResultList()
-                .stream()
-                .findFirst()
-                .orElseGet(() -> {
-                    Role role = new Role();
-                    role.setRole(roleName);
-                    saveRole(role);
-                    return role;
-                });
-
     }
 }
