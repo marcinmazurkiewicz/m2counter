@@ -11,25 +11,31 @@ import javax.enterprise.context.ApplicationScoped;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Set;
 
 @ApplicationScoped
 public class UserService {
     private final UserMapper mapper;
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserMapper mapper, UserRepository repository) {
+    public UserService(UserMapper mapper, UserRepository userRepository, RoleRepository roleRepository) {
         this.mapper = mapper;
-        this.repository = repository;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public UserResponse registerUser(UserRequest userRequest) {
         User user = mapper.mapRequestToEntity(userRequest);
-        repository.saveUser(user);
+        Role userRole = roleRepository.findRole("USER")
+                .orElseGet(() -> roleRepository.createNewRole("USER"));
+        user.setRoles(Set.of(userRole));
+        userRepository.saveUser(user);
         return mapper.mapEntityToResponse(user);
     }
 
     public UserResponse login(UserRequest userRequest) {
-        User user = repository.findUser(userRequest.getEmail())
+        User user = userRepository.findUser(userRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with email %s not found", userRequest.getEmail())));
         if (verifyPassword(userRequest.getPassword(), user.getPassword())) {
             return mapper.mapEntityToResponse(user);
