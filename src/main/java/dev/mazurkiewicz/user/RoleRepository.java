@@ -22,6 +22,7 @@ public class RoleRepository {
                 .findFirst();
     }
 
+    @Transactional
     public Role createNewRole(String roleName) {
         Role role = new Role();
         role.setRole(roleName);
