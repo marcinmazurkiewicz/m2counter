@@ -27,8 +27,8 @@ public class UserService {
 
     public UserResponse registerUser(UserRequest userRequest) {
         User user = mapper.mapRequestToEntity(userRequest);
-        Role userRole = roleRepository.findRole("USER")
-                .orElseGet(() -> roleRepository.createNewRole("USER"));
+        Role userRole = roleRepository.findRole(RoleKind.USER.name())
+                .orElseGet(() -> roleRepository.createNewRole(RoleKind.USER.name()));
         user.setRoles(Set.of(userRole));
         userRepository.saveUser(user);
         return mapper.mapEntityToResponse(user);
