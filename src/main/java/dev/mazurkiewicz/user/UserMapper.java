@@ -1,0 +1,29 @@
+package dev.mazurkiewicz.user;
+
+import dev.mazurkiewicz.EntityMapper;
+import io.quarkus.elytron.security.common.BcryptUtil;
+
+import javax.enterprise.context.ApplicationScoped;
+import java.util.stream.Collectors;
+
+@ApplicationScoped
+public class UserMapper implements EntityMapper<User, UserRequest, UserResponse> {
+
+    @Override
+    public User mapRequestToEntity(UserRequest request) {
+        User result = new User();
+        result.setEmail(request.getEmail());
+        result.setPassword(BcryptUtil.bcryptHash(request.getPassword()));
+        return result;
+    }
+
+    @Override
+    public UserResponse mapEntityToResponse(User entity) {
+        UserResponse result = new UserResponse();
+        result.setId(entity.getId());
+        result.setEmail(entity.getEmail());
+        if (entity.getRoles() != null)
+            result.setRoles(entity.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()));
+        return result;
+    }
+}
