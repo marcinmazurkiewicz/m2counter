@@ -15,10 +15,4 @@ public class UserResource {
     public UserResponse registerUser(UserRequest userRequest) {
         return service.registerUser(userRequest);
     }
-
-    @POST
-    @Path("login")
-    public UserResponse login(UserRequest userRequest) {
-        return service.login(userRequest);
-    }
 }
