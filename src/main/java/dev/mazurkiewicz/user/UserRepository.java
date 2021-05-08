@@ -21,6 +21,12 @@ public class UserRepository {
     public Optional<User> findUser(String username) {
         return entityManager.createNamedQuery("Users.findByEmail", User.class)
                 .setParameter("email", username)
-                .getResultList().stream().findFirst();
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    public Optional<User> findUserById(Long userId) {
+        return Optional.ofNullable(entityManager.find(User.class, userId));
     }
 }
