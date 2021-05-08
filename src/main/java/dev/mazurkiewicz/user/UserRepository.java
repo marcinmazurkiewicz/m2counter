@@ -18,7 +18,7 @@ public class UserRepository {
         entityManager.persist(user);
     }
 
-    public Optional<User> findUser(String username) {
+    public Optional<User> findUserByEmail(String username) {
         return entityManager.createNamedQuery("Users.findByEmail", User.class)
                 .setParameter("email", username)
                 .getResultList()
