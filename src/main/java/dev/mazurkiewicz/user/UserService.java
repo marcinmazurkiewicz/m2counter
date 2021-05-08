@@ -1,5 +1,7 @@
 package dev.mazurkiewicz.user;
 
+import dev.mazurkiewicz.exception.ResourceNotFoundException;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Set;
 
@@ -22,5 +24,18 @@ public class UserService {
         user.setRoles(Set.of(userRole));
         userRepository.saveUser(user);
         return mapper.mapEntityToResponse(user);
+    }
+
+    public User findUser(String email) {
+        return userRepository.findUserByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format("User with email %s not exist", email)));
+    }
+
+    public UserResponse findUserById(Long userId) {
+        return userRepository.findUserById(userId)
+                .map(mapper::mapEntityToResponse)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format("User with id %d not exist", userId)));
     }
 }
