@@ -6,13 +6,17 @@ import javax.enterprise.context.ApplicationScoped;
 import java.time.ZoneId;
 
 @ApplicationScoped
-public class JwtProperties {
-    @ConfigProperty(name = "jwt.token-prefix")
+public class TokenProperties {
+    @ConfigProperty(name = "token.jwt.prefix")
     String tokenPrefix;
-    @ConfigProperty(name = "jwt.token-expiration")
+    @ConfigProperty(name = "token.jwt.expiration")
     Integer tokenExpirationAfterSeconds;
-    @ConfigProperty(name = "jwt.issuer")
+    @ConfigProperty(name = "token.jwt.issuer")
     String issuer;
+    @ConfigProperty(name = "token.refresh.name")
+    String refreshTokenName;
+    @ConfigProperty(name = "token.refresh.expiration")
+    int refreshTokenExpirationAfterSeconds;
 
     public String getTokenPrefix() {
         return tokenPrefix;
@@ -24,6 +28,14 @@ public class JwtProperties {
 
     public String getIssuer() {
         return issuer;
+    }
+
+    public String getRefreshTokenName() {
+        return refreshTokenName;
+    }
+
+    public int getRefreshTokenExpirationAfterSeconds() {
+        return refreshTokenExpirationAfterSeconds;
     }
 
     public ZoneId getTimezoneId() {
