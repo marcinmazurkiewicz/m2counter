@@ -1,9 +1,5 @@
 package dev.mazurkiewicz.user;
 
-import dev.mazurkiewicz.exception.ResourceNotFoundException;
-import dev.mazurkiewicz.util.PasswordUtils;
-import io.quarkus.security.UnauthorizedException;
-
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Set;
 
@@ -26,15 +22,5 @@ public class UserService {
         user.setRoles(Set.of(userRole));
         userRepository.saveUser(user);
         return mapper.mapEntityToResponse(user);
-    }
-
-    public UserResponse login(UserRequest userRequest) {
-        User user = userRepository.findUser(userRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with email %s not found", userRequest.getEmail())));
-        if (PasswordUtils.verifyPassword(userRequest.getPassword(), user.getPassword())) {
-            return mapper.mapEntityToResponse(user);
-        } else {
-            throw new UnauthorizedException();
-        }
     }
 }
