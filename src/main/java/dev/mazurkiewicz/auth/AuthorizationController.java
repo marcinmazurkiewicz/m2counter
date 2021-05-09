@@ -1,13 +1,12 @@
 package dev.mazurkiewicz.auth;
 
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 @Path("/auth")
 public class AuthorizationController {
-
     private final AuthorizationService authorizationService;
 
     public AuthorizationController(AuthorizationService authorizationService) {
@@ -15,9 +14,14 @@ public class AuthorizationController {
     }
 
     @POST
+    @Path("/login")
     public Response login(LoginRequest loginRequest) {
-        String token = authorizationService.login(loginRequest);
-        return Response.ok().header(HttpHeaders.AUTHORIZATION, token).build();
+        return authorizationService.login(loginRequest);
     }
 
+    @POST
+    @Path("/refresh")
+    public Response refresh(@CookieParam("refresh_token") String refreshToken) {
+        return authorizationService.refreshToken(refreshToken);
+    }
 }
