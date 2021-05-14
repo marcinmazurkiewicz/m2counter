@@ -8,6 +8,7 @@ import dev.mazurkiewicz.util.PasswordUtils;
 import io.quarkus.security.UnauthorizedException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 @ApplicationScoped
@@ -22,8 +23,8 @@ public class AuthorizationService {
         this.userMapper = userMapper;
     }
 
-    public Response login(LoginRequest loginRequest) {
-        User user = userService.findUser(loginRequest.getUsername());
+    public Response login(@Valid LoginRequest loginRequest) {
+        User user = userService.findUser(loginRequest.getEmail());
         if (PasswordUtils.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
             return tokenService.prepareTokens(userMapper.mapEntityToResponse(user));
         } else {
