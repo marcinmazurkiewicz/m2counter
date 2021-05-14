@@ -1,14 +1,11 @@
 package dev.mazurkiewicz.point;
 
-import dev.mazurkiewicz.EntityMapper;
-
 import javax.enterprise.context.ApplicationScoped;
 import java.time.Instant;
 
 @ApplicationScoped
-public class PointMapper implements EntityMapper<Point, PointRequest, PointResponse> {
+public class PointMapper {
 
-    @Override
     public Point mapRequestToEntity(PointRequest request) {
         Point result = new Point();
         result.setGameId(request.getGameId());
@@ -19,7 +16,6 @@ public class PointMapper implements EntityMapper<Point, PointRequest, PointRespo
         return result;
     }
 
-    @Override
     public PointResponse mapEntityToResponse(Point entity) {
         PointResponse result = new PointResponse();
         result.setId(entity.getId());
