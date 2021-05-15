@@ -8,10 +8,12 @@ import io.quarkus.security.jpa.Username;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM users u WHERE u.email = :email")
+        @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM users u WHERE u.email = :email"),
+        @NamedQuery(name = "Users.findByUid", query = "SELECT u FROM users u WHERE u.uid = :uid")
 })
 @UserDefinition
 public class User {
@@ -22,6 +24,7 @@ public class User {
     private String password;
     @Roles
     private Set<Role> roles;
+    private UUID uid;
 
     @Id
     @SequenceGenerator(name = "userSeq", sequenceName = "user_id_seq", allocationSize = 1)
@@ -34,6 +37,7 @@ public class User {
         this.id = id;
     }
 
+    @Column(nullable = false, unique = true)
     public String getEmail() {
         return email;
     }
@@ -42,6 +46,7 @@ public class User {
         this.email = email;
     }
 
+    @Column(nullable = false)
     public String getPassword() {
         return password;
     }
@@ -60,5 +65,14 @@ public class User {
 
     public void setRoles(Set<Role> authorities) {
         this.roles = authorities;
+    }
+
+    @Column(unique = true, nullable = false)
+    public UUID getUid() {
+        return uid;
+    }
+
+    public void setUid(UUID uuid) {
+        this.uid = uuid;
     }
 }
