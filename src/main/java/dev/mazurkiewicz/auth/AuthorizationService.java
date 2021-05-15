@@ -29,7 +29,7 @@ public class AuthorizationService {
     public Response login(LoginRequest loginRequest) {
         User user = userService.findUser(loginRequest.getEmail());
         if (PasswordUtils.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
-            return tokenService.prepareTokens(userMapper.mapEntityToResponse(user));
+            return tokenService.prepareTokens(user);
         } else {
             throw new UnauthorizedException("Incorrect password");
         }
@@ -37,7 +37,7 @@ public class AuthorizationService {
 
     public Response refreshToken(String token) {
         RefreshToken refreshToken = tokenService.getValidRefreshToken(token);
-        UserResponse user = userService.findUserById(refreshToken.getUserId());
+        User user = userService.findById(refreshToken.getUserId());
         Response response = tokenService.prepareTokens(user);
         tokenService.removeToken(refreshToken);
         return response;

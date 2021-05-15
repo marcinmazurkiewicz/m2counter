@@ -4,6 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserRepository {
@@ -26,7 +27,15 @@ public class UserRepository {
                 .findFirst();
     }
 
-    public Optional<User> findUserById(Long userId) {
-        return Optional.ofNullable(entityManager.find(User.class, userId));
+    public Optional<User> findByUserId(UUID result) {
+        return entityManager.createNamedQuery("Users.findByUid", User.class)
+                .setParameter("uid", result)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
     }
 }

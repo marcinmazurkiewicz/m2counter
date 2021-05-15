@@ -5,6 +5,7 @@ import dev.mazurkiewicz.auth.Role;
 import dev.mazurkiewicz.util.PasswordUtils;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -18,11 +19,7 @@ public class UserMapper {
     }
 
     public UserResponse mapEntityToResponse(User entity) {
-        UserResponse result = new UserResponse();
-        result.setId(entity.getId());
-        result.setEmail(entity.getEmail());
-        if (entity.getRoles() != null)
-            result.setRoles(entity.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()));
-        return result;
+        Set<String> roles = entity.getRoles().stream().map(Role::getRole).collect(Collectors.toSet());
+        return new UserResponse(entity.getUid(), entity.getEmail(), roles);
     }
 }
