@@ -24,6 +24,10 @@ public class UserResponse {
         return email;
     }
 
+    public String getNick() {
+        return nick;
+    }
+
     public Set<String> getRoles() {
         return roles;
     }
