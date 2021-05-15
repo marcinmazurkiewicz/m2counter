@@ -1,4 +1,4 @@
-package dev.mazurkiewicz.user;
+package dev.mazurkiewicz.auth;
 
 import io.quarkus.security.jpa.RolesValue;
 
