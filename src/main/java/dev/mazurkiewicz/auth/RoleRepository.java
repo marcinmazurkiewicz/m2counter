@@ -1,4 +1,4 @@
-package dev.mazurkiewicz.user;
+package dev.mazurkiewicz.auth;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;

@@ -4,6 +4,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 import javax.validation.metadata.ConstraintDescriptor;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConstraintViolationDescriptor {
     private final ConstraintViolation<?> constraintViolation;

@@ -1,5 +1,6 @@
 package dev.mazurkiewicz.exception;
 
+import java.util.List;
 import java.util.Map;
 
 public class ErrorResponse {
@@ -7,13 +8,13 @@ public class ErrorResponse {
     private final String message;
     private final String path;
     private final ErrorType error;
-    private final Map<String, ErrorInfo> fieldsErrorInfo;
+    private final Map<String, List<ErrorInfo>> fieldsErrorInfo;
 
     public ErrorResponse(int status, String message, String path, ErrorType error) {
         this(status, message, path, error, null);
     }
 
-    public ErrorResponse(int status, String message, String path, ErrorType error, Map<String, ErrorInfo> fieldsErrorInfo) {
+    public ErrorResponse(int status, String message, String path, ErrorType error, Map<String, List<ErrorInfo>> fieldsErrorInfo) {
         this.status = status;
         this.message = message;
         this.path = path;
@@ -37,7 +38,7 @@ public class ErrorResponse {
         return error;
     }
 
-    public Map<String, ErrorInfo> getFieldsErrorInfo() {
+    public Map<String, List<ErrorInfo>> getFieldsErrorInfo() {
         return fieldsErrorInfo;
     }
 }

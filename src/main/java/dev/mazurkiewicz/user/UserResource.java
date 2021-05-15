@@ -1,6 +1,8 @@
 package dev.mazurkiewicz.user;
 
-import javax.ws.rs.POST;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
+
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 @Path("/users")
@@ -11,8 +13,9 @@ public class UserResource {
         this.service = service;
     }
 
-    @POST
-    public UserResponse registerUser(UserRequest userRequest) {
-        return service.registerUser(userRequest);
+    @GET
+    @Path("/{userId}")
+    public UserResponse getUSer(@PathParam Long userId) {
+        return service.findUserById(userId);
     }
 }

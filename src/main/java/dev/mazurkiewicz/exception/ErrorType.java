@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum ErrorType {
-    ABOVE_MAX(List.of("DecimalMax", "Max")),
+    INVALID_LENGTH(List.of("Size", "Length")),
     EMPTY(List.of("NotEmpty", "NotNull", "NotBlank", "NotNullFile")),
-    AT_LEAST_ONE(List.of("AtLeastOne")),
     NOT_MAIL(List.of("Email")),
-    NOT_MATCH(List.of("FieldMatch")),
+    NOT_MATCH(List.of("PasswordMatch")),
     NOT_UNIQUE(List.of("UniqueMail")),
-    UNDER_MIN(List.of("DecimalMin", "Min")),
     FORBIDDEN(List.of("ForbiddenAccessException")),
     CREDENTIALS_ERROR(List.of("BadCredentialsException")),
     TOKEN_EXPIRED(List.of("TokenExpiredException", "ExpiredJwtException")),

@@ -1,23 +1,22 @@
 package dev.mazurkiewicz.user;
 
-import dev.mazurkiewicz.EntityMapper;
+import dev.mazurkiewicz.auth.RegisterRequest;
+import dev.mazurkiewicz.auth.Role;
 import dev.mazurkiewicz.util.PasswordUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class UserMapper implements EntityMapper<User, UserRequest, UserResponse> {
+public class UserMapper {
 
-    @Override
-    public User mapRequestToEntity(UserRequest request) {
+    public User mapRequestToEntity(RegisterRequest request) {
         User result = new User();
-        result.setEmail(request.getEmail());
+        result.setEmail(request.getEmail().toLowerCase());
         result.setPassword(PasswordUtils.hashPassword(request.getPassword()));
         return result;
     }
 
-    @Override
     public UserResponse mapEntityToResponse(User entity) {
         UserResponse result = new UserResponse();
         result.setId(entity.getId());

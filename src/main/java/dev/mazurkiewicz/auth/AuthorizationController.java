@@ -1,5 +1,8 @@
 package dev.mazurkiewicz.auth;
 
+import dev.mazurkiewicz.user.UserResponse;
+
+import javax.validation.Valid;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,7 +18,7 @@ public class AuthorizationController {
 
     @POST
     @Path("/login")
-    public Response login(LoginRequest loginRequest) {
+    public Response login(@Valid LoginRequest loginRequest) {
         return authorizationService.login(loginRequest);
     }
 
@@ -23,5 +26,11 @@ public class AuthorizationController {
     @Path("/refresh")
     public Response refresh(@CookieParam("refresh_token") String refreshToken) {
         return authorizationService.refreshToken(refreshToken);
+    }
+
+    @POST
+    @Path("/register")
+    public UserResponse register(@Valid RegisterRequest registerRequest) {
+        return authorizationService.register(registerRequest);
     }
 }

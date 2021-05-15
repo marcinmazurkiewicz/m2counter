@@ -2,6 +2,7 @@ package dev.mazurkiewicz.player;
 
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,7 +22,7 @@ public class PlayerResource {
     }
 
     @POST
-    public PlayerResponse savePlayer(PlayerRequest playerRequest) {
+    public PlayerResponse savePlayer(@Valid PlayerRequest playerRequest) {
         return service.savePlayer(playerRequest);
     }
 }
