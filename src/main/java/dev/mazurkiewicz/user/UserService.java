@@ -33,4 +33,8 @@ public class UserService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(String.format("User with id %s not exist", userId.toString())));
     }
+
+    public User findById(Long id) {
+        return userRepository.findById(id);
+    }
 }
