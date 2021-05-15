@@ -7,7 +7,7 @@ public enum ErrorType {
     INVALID_LENGTH(List.of("Size", "Length")),
     EMPTY(List.of("NotEmpty", "NotNull", "NotBlank", "NotNullFile")),
     NOT_MAIL(List.of("Email")),
-    NOT_MATCH(List.of("FieldMatch")),
+    NOT_MATCH(List.of("PasswordMatch")),
     NOT_UNIQUE(List.of("UniqueMail")),
     FORBIDDEN(List.of("ForbiddenAccessException")),
     CREDENTIALS_ERROR(List.of("BadCredentialsException")),
