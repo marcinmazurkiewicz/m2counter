@@ -1,4 +1,4 @@
-package dev.mazurkiewicz.auth;
+package dev.mazurkiewicz.auth.token;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

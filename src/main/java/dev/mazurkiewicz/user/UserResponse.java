@@ -6,11 +6,13 @@ import java.util.UUID;
 public class UserResponse {
     private final UUID uid;
     private final String email;
+    private final String nick;
     private final Set<String> roles;
 
-    public UserResponse(UUID uid, String email, Set<String> roles) {
+    public UserResponse(UUID uid, String email, String nick, Set<String> roles) {
         this.uid = uid;
         this.email = email;
+        this.nick = nick;
         this.roles = roles;
     }
 

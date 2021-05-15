@@ -15,12 +15,14 @@ public class RegisterRequest {
     @Size(min = 8, max = 32)
     private final String password;
     private final String confirmPassword;
+    private final String nick;
 
     @JsonCreator
-    public RegisterRequest(String email, String password, String confirmPassword) {
+    public RegisterRequest(String email, String password, String confirmPassword, String nick) {
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.nick = nick;
     }
 
     public String getEmail() {
@@ -33,5 +35,9 @@ public class RegisterRequest {
 
     public String getConfirmPassword() {
         return confirmPassword;
+    }
+
+    public String getNick() {
+        return nick;
     }
 }

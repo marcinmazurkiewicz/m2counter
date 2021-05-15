@@ -1,5 +1,10 @@
 package dev.mazurkiewicz.auth;
 
+import dev.mazurkiewicz.auth.role.Role;
+import dev.mazurkiewicz.auth.role.RoleKind;
+import dev.mazurkiewicz.auth.role.RoleRepository;
+import dev.mazurkiewicz.auth.token.RefreshToken;
+import dev.mazurkiewicz.auth.token.TokenService;
 import dev.mazurkiewicz.user.User;
 import dev.mazurkiewicz.user.UserMapper;
 import dev.mazurkiewicz.user.UserResponse;
@@ -29,7 +34,7 @@ public class AuthorizationService {
     public Response login(LoginRequest loginRequest) {
         User user = userService.findUser(loginRequest.getEmail());
         if (PasswordUtils.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
-            return tokenService.prepareTokens(user);
+            return tokenService.prepareTokens(userMapper.mapEntityToResponse(user));
         } else {
             throw new UnauthorizedException("Incorrect password");
         }
@@ -37,7 +42,7 @@ public class AuthorizationService {
 
     public Response refreshToken(String token) {
         RefreshToken refreshToken = tokenService.getValidRefreshToken(token);
-        User user = userService.findById(refreshToken.getUserId());
+        UserResponse user = userService.findByUserId(refreshToken.getUid());
         Response response = tokenService.prepareTokens(user);
         tokenService.removeToken(refreshToken);
         return response;

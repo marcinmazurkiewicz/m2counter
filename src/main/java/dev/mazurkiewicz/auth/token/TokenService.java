@@ -1,6 +1,6 @@
-package dev.mazurkiewicz.auth;
+package dev.mazurkiewicz.auth.token;
 
-import dev.mazurkiewicz.user.User;
+import dev.mazurkiewicz.user.UserResponse;
 import io.quarkus.security.UnauthorizedException;
 import io.smallrye.jwt.build.Jwt;
 
@@ -10,9 +10,7 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TokenService {
@@ -24,8 +22,8 @@ public class TokenService {
         this.tokenRepository = tokenRepository;
     }
 
-    public Response prepareTokens(User user) {
-        NewCookie refreshCookie = new NewCookie(tokenProperties.getRefreshTokenName(), createRefreshToken(user.getId()),
+    public Response prepareTokens(UserResponse user) {
+        NewCookie refreshCookie = new NewCookie(tokenProperties.getRefreshTokenName(), createRefreshToken(user.getUid()),
                 "/", null, null, tokenProperties.getRefreshTokenExpirationAfterSeconds(),
                 false, true);
         return Response.ok()
@@ -49,10 +47,10 @@ public class TokenService {
         tokenRepository.removeToken(token);
     }
 
-    private String generateJwtToken(User user) {
+    private String generateJwtToken(UserResponse user) {
         String token = Jwt.issuer(tokenProperties.getIssuer())
                 .upn(user.getEmail())
-                .groups(prepareRolesForToken(user.getRoles()))
+                .groups(user.getRoles())
                 .claim("uid", user.getUid())
                 .issuedAt(Instant.now())
                 .expiresAt(LocalDateTime.now()
@@ -62,15 +60,10 @@ public class TokenService {
         return String.format("%s %s", tokenProperties.getTokenPrefix(), token);
     }
 
-    private Set<String> prepareRolesForToken(Set<Role> roles) {
-        return roles.stream()
-                .map(Role::getRole)
-                .collect(Collectors.toSet());
-    }
 
-    private String createRefreshToken(Long id) {
+    private String createRefreshToken(UUID uid) {
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUserId(id);
+        refreshToken.setUid(uid);
         refreshToken.setRefreshToken(generateRefreshToken());
         refreshToken.setCreatedAt(Instant.now());
         refreshToken.setExpiredAt(LocalDateTime.now()

@@ -1,7 +1,8 @@
-package dev.mazurkiewicz.auth;
+package dev.mazurkiewicz.auth.token;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity(name = "refresh_tokens")
 @NamedQueries({
@@ -10,7 +11,7 @@ import java.time.Instant;
 })
 public class RefreshToken {
     private Long id;
-    private Long userId;
+    private UUID uid;
     private String refreshToken;
     private Instant createdAt;
     private Instant expiredAt;
@@ -26,13 +27,13 @@ public class RefreshToken {
         this.id = id;
     }
 
-    @Column(name = "user_id")
-    public Long getUserId() {
-        return userId;
+    @Column(name = "uid")
+    public UUID getUid() {
+        return uid;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUid(UUID userId) {
+        this.uid = userId;
     }
 
     @Column(name = "refresh_token")

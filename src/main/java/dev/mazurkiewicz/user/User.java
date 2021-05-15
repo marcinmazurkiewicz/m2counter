@@ -1,6 +1,6 @@
 package dev.mazurkiewicz.user;
 
-import dev.mazurkiewicz.auth.Role;
+import dev.mazurkiewicz.auth.role.Role;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
@@ -24,6 +24,7 @@ public class User {
     private String password;
     @Roles
     private Set<Role> roles;
+    private String nick;
     private UUID uid;
 
     @Id
@@ -65,6 +66,14 @@ public class User {
 
     public void setRoles(Set<Role> authorities) {
         this.roles = authorities;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 
     @Column(unique = true, nullable = false)

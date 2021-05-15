@@ -1,4 +1,4 @@
-package dev.mazurkiewicz.auth;
+package dev.mazurkiewicz.auth.role;
 
 public enum RoleKind {
     USER, ADMIN

@@ -1,4 +1,4 @@
-package dev.mazurkiewicz.auth;
+package dev.mazurkiewicz.auth.token;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
