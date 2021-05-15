@@ -34,4 +34,8 @@ public class UserRepository {
                 .stream()
                 .findFirst();
     }
+
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
+    }
 }
