@@ -1,6 +1,6 @@
 package dev.mazurkiewicz.auth;
 
-import dev.mazurkiewicz.user.UserResponse;
+import dev.mazurkiewicz.user.User;
 import io.quarkus.security.UnauthorizedException;
 import io.smallrye.jwt.build.Jwt;
 
@@ -10,7 +10,9 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TokenService {
@@ -22,7 +24,7 @@ public class TokenService {
         this.tokenRepository = tokenRepository;
     }
 
-    public Response prepareTokens(UserResponse user) {
+    public Response prepareTokens(User user) {
         NewCookie refreshCookie = new NewCookie(tokenProperties.getRefreshTokenName(), createRefreshToken(user.getId()),
                 "/", null, null, tokenProperties.getRefreshTokenExpirationAfterSeconds(),
                 false, true);
@@ -47,11 +49,11 @@ public class TokenService {
         tokenRepository.removeToken(token);
     }
 
-    private String generateJwtToken(UserResponse user) {
+    private String generateJwtToken(User user) {
         String token = Jwt.issuer(tokenProperties.getIssuer())
                 .upn(user.getEmail())
-                .groups(user.getRoles())
-                .claim("uid", user.getId())
+                .groups(prepareRolesForToken(user.getRoles()))
+                .claim("uid", user.getUid())
                 .issuedAt(Instant.now())
                 .expiresAt(LocalDateTime.now()
                         .plusSeconds(tokenProperties.getTokenExpirationAfterSeconds())
@@ -60,9 +62,15 @@ public class TokenService {
         return String.format("%s %s", tokenProperties.getTokenPrefix(), token);
     }
 
-    private String createRefreshToken(Long userId) {
+    private Set<String> prepareRolesForToken(Set<Role> roles) {
+        return roles.stream()
+                .map(Role::getRole)
+                .collect(Collectors.toSet());
+    }
+
+    private String createRefreshToken(Long id) {
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUserId(userId);
+        refreshToken.setUserId(id);
         refreshToken.setRefreshToken(generateRefreshToken());
         refreshToken.setCreatedAt(Instant.now());
         refreshToken.setExpiredAt(LocalDateTime.now()
