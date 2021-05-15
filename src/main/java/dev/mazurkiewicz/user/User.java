@@ -1,5 +1,6 @@
 package dev.mazurkiewicz.user;
 
+import dev.mazurkiewicz.auth.Role;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
