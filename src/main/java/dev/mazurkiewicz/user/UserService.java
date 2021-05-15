@@ -3,6 +3,7 @@ package dev.mazurkiewicz.user;
 import dev.mazurkiewicz.exception.ResourceNotFoundException;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserService {
@@ -15,6 +16,7 @@ public class UserService {
     }
 
     public UserResponse saveUser(User user) {
+        user.setUid(UUID.randomUUID());
         userRepository.saveUser(user);
         return mapper.mapEntityToResponse(user);
     }
@@ -25,10 +27,10 @@ public class UserService {
                         new ResourceNotFoundException(String.format("User with email %s not exist", email)));
     }
 
-    public UserResponse findUserById(Long userId) {
-        return userRepository.findUserById(userId)
+    public UserResponse findByUserId(UUID userId) {
+        return userRepository.findByUserId(userId)
                 .map(mapper::mapEntityToResponse)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(String.format("User with id %d not exist", userId)));
+                        new ResourceNotFoundException(String.format("User with id %s not exist", userId.toString())));
     }
 }
