@@ -2,6 +2,7 @@ package dev.mazurkiewicz.game;
 
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,7 +28,7 @@ public class GameResource {
     }
 
     @POST
-    public GameResponse saveGame(GameRequest gameRequest) {
+    public GameResponse saveGame(@Valid GameRequest gameRequest) {
         return service.saveGame(gameRequest);
     }
 }
