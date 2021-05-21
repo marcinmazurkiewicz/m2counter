@@ -16,7 +16,6 @@ public class UserService {
     }
 
     public UserResponse saveUser(User user) {
-        user.setUid(UUID.randomUUID());
         userRepository.saveUser(user);
         return mapper.mapEntityToResponse(user);
     }

@@ -27,12 +27,8 @@ public class UserRepository {
                 .findFirst();
     }
 
-    public Optional<User> findByUserId(UUID result) {
-        return entityManager.createNamedQuery("Users.findByUid", User.class)
-                .setParameter("uid", result)
-                .getResultList()
-                .stream()
-                .findFirst();
+    public Optional<User> findByUserId(UUID id) {
+        return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     public User findById(Long id) {

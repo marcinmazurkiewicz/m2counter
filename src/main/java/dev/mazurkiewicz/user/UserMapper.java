@@ -21,6 +21,6 @@ public class UserMapper {
 
     public UserResponse mapEntityToResponse(User entity) {
         Set<String> roles = entity.getRoles().stream().map(Role::getRole).collect(Collectors.toSet());
-        return new UserResponse(entity.getUid(), entity.getEmail(), entity.getNick(), roles);
+        return new UserResponse(entity.getId(), entity.getEmail(), entity.getNick(), roles);
     }
 }

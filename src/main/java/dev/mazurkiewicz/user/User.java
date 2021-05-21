@@ -5,6 +5,7 @@ import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,12 +13,11 @@ import java.util.UUID;
 
 @Entity(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM users u WHERE u.email = :email"),
-        @NamedQuery(name = "Users.findByUid", query = "SELECT u FROM users u WHERE u.uid = :uid")
+        @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM users u WHERE u.email = :email")
 })
 @UserDefinition
 public class User {
-    private Long id;
+    private UUID id;
     @Username
     private String email;
     @Password
@@ -25,16 +25,15 @@ public class User {
     @Roles
     private Set<Role> roles;
     private String nick;
-    private UUID uid;
 
     @Id
-    @SequenceGenerator(name = "userSeq", sequenceName = "user_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "userSeq")
-    public Long getId() {
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GeneratedValue(generator = "UUIDGenerator")
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -74,14 +73,5 @@ public class User {
 
     public void setNick(String nick) {
         this.nick = nick;
-    }
-
-    @Column(unique = true, nullable = false)
-    public UUID getUid() {
-        return uid;
-    }
-
-    public void setUid(UUID uuid) {
-        this.uid = uuid;
     }
 }
