@@ -5,6 +5,7 @@ import dev.mazurkiewicz.auth.role.RoleKind;
 import dev.mazurkiewicz.auth.role.RoleRepository;
 import dev.mazurkiewicz.auth.token.RefreshToken;
 import dev.mazurkiewicz.auth.token.TokenService;
+import dev.mazurkiewicz.character.CharacterService;
 import dev.mazurkiewicz.user.User;
 import dev.mazurkiewicz.user.UserMapper;
 import dev.mazurkiewicz.user.UserResponse;
@@ -22,13 +23,15 @@ public class AuthorizationService {
     private final TokenService tokenService;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private final CharacterService characterService;
 
     public AuthorizationService(UserService userService, TokenService tokenService,
-                                UserMapper userMapper, RoleRepository roleRepository) {
+                                UserMapper userMapper, RoleRepository roleRepository, CharacterService characterService) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
+        this.characterService = characterService;
     }
 
     public Response login(LoginRequest loginRequest) {
@@ -53,6 +56,8 @@ public class AuthorizationService {
         Role userRole = roleRepository.findRole(RoleKind.USER.name())
                 .orElseGet(() -> roleRepository.createNewRole(RoleKind.USER.name()));
         user.setRoles(Set.of(userRole));
-        return userService.saveUser(user);
+        UserResponse userResponse = userService.saveUser(user);
+        characterService.createDefaultCharacter(userResponse.getNick(), userResponse.getUid());
+        return userResponse;
     }
 }
