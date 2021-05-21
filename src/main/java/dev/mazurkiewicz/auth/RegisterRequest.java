@@ -14,7 +14,9 @@ public class RegisterRequest {
     @NotBlank
     @Size(min = 8, max = 32)
     private final String password;
+    @NotBlank
     private final String confirmPassword;
+    @NotBlank
     private final String nick;
 
     @JsonCreator
