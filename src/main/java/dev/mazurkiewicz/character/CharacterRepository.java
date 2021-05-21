@@ -28,7 +28,7 @@ public class CharacterRepository {
 
     public List<Character> getCharactersForUser(UUID uid) {
         return entityManager.createNamedQuery("Characters.findAllForUser", Character.class)
-                .setParameter("uid", uid)
+                .setParameter("userId", uid)
                 .getResultList();
     }
 }
