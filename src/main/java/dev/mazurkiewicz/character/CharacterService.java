@@ -25,7 +25,7 @@ public class CharacterService {
 
     public CharacterResponse savePlayer(CharacterRequest characterRequest, UUID uid) {
         Character character = mapper.mapRequestToEntity(characterRequest);
-        character.setUid(uid);
+        character.setUserId(uid);
         repository.saveCharacter(character);
         return mapper.mapEntityToResponse(character);
     }
@@ -35,5 +35,12 @@ public class CharacterService {
         return charactersForUser.stream()
                 .map(mapper::mapEntityToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void createDefaultCharacter(String name, UUID userId) {
+        Character character = new Character();
+        character.setUserId(userId);
+        character.setName(name);
+        repository.saveCharacter(character);
     }
 }
