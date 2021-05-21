@@ -12,6 +12,6 @@ public class CharacterMapper {
     }
 
     public CharacterResponse mapEntityToResponse(Character entity) {
-        return new CharacterResponse(entity.getId(), entity.getName(), entity.getDescription(), entity.getUid());
+        return new CharacterResponse(entity.getId(), entity.getName(), entity.getDescription(), entity.getUserId());
     }
 }
