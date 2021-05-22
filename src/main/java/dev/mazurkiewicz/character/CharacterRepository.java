@@ -31,4 +31,8 @@ public class CharacterRepository {
                 .setParameter("userId", uid)
                 .getResultList();
     }
+
+    public Optional<Character> findCharacterById(UUID characterId) {
+        return Optional.ofNullable(entityManager.find(Character.class, characterId));
+    }
 }
