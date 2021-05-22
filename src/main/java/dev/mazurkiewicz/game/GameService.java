@@ -4,7 +4,6 @@ import dev.mazurkiewicz.character.Character;
 import dev.mazurkiewicz.character.CharacterRepository;
 import dev.mazurkiewicz.exception.ResourceNotFoundException;
 import io.quarkus.security.UnauthorizedException;
-import org.eclipse.microprofile.jwt.Claim;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
@@ -16,13 +15,11 @@ public class GameService {
     private final GameRepository repository;
     private final GameMapper mapper;
     private final CharacterRepository characterRepository;
-    private final UUID userId;
 
-    public GameService(GameRepository repository, GameMapper mapper, CharacterRepository characterRepository, @Claim("uid") String uid) {
+    public GameService(GameRepository repository, GameMapper mapper, CharacterRepository characterRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.characterRepository = characterRepository;
-        this.userId = UUID.fromString(uid);
     }
 
     public List<GameResponse> getAllGames() {
@@ -39,7 +36,7 @@ public class GameService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Game with id %d not found", gameId)));
     }
 
-    public GameResponse createGame(GameRequest gameRequest) {
+    public GameResponse createGame(GameRequest gameRequest, UUID userId) {
         Game game = mapper.mapRequestToEntity(gameRequest);
         Character creator = characterRepository.findCharacterById(gameRequest.getCreatorId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Character with %s not found", gameRequest.getCreatorId())));
