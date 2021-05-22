@@ -2,6 +2,7 @@ package dev.mazurkiewicz.game;
 
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import javax.enterprise.context.RequestScoped;
 import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -9,6 +10,7 @@ import javax.ws.rs.Path;
 import java.util.List;
 
 @Path("/games")
+@RequestScoped
 public class GameResource {
     private final GameService service;
 
@@ -29,6 +31,6 @@ public class GameResource {
 
     @POST
     public GameResponse saveGame(@Valid GameRequest gameRequest) {
-        return service.saveGame(gameRequest);
+        return service.createGame(gameRequest);
     }
 }
