@@ -34,7 +34,7 @@ public class GameResource {
     }
 
     @POST
-    public GameResponse saveGame(@Valid GameRequest gameRequest) {
+    public GameResponse createGame(@Valid GameRequest gameRequest) {
         return service.createGame(gameRequest, userId);
     }
 }
